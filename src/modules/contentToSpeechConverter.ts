@@ -22,7 +22,6 @@ export interface SpeechCallbacks {
 
 export class ContentToSpeechConverter {
   private synthesis: SpeechSynthesis;
-  private currentUtterance: SpeechSynthesisUtterance | null = null;
   private isPlaying: boolean = false;
   private isPaused: boolean = false;
   private availableVoices: SpeechSynthesisVoice[] = [];
@@ -120,7 +119,6 @@ export class ContentToSpeechConverter {
         utterance.onend = () => {
           this.isPlaying = false;
           this.isPaused = false;
-          this.currentUtterance = null;
           this.callbacks.onEnd?.();
           resolve();
         };
@@ -128,7 +126,6 @@ export class ContentToSpeechConverter {
         utterance.onerror = (event) => {
           this.isPlaying = false;
           this.isPaused = false;
-          this.currentUtterance = null;
           this.callbacks.onError?.(event);
           reject(new Error(`Speech synthesis error: ${event.error}`));
         };
@@ -143,7 +140,6 @@ export class ContentToSpeechConverter {
           this.callbacks.onResume?.();
         };
 
-        this.currentUtterance = utterance;
         this.synthesis.speak(utterance);
         
       } catch (error) {
@@ -161,7 +157,6 @@ export class ContentToSpeechConverter {
     }
     this.isPlaying = false;
     this.isPaused = false;
-    this.currentUtterance = null;
   }
 
   /**

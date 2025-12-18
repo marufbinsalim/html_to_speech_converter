@@ -47,6 +47,7 @@ export class ContentToSpeechConverter {
       
       // If no voice is specified, try to set a default English voice
       if (!this.settings.voice && this.availableVoices.length > 0) {
+        console.log(this.availableVoices);
         const englishVoice = this.availableVoices.find(voice =>
           voice.lang.startsWith('en')
         ) || this.availableVoices[0];
